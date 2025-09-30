@@ -1,19 +1,18 @@
 import { notFound } from "next/navigation"
 import { getTranslations } from "next-intl/server"
 
-import { ChevronDownIcon } from "lucide-react"
-
 import { retrieveCustomer } from "@/utils/data/customer"
 import { listOrders } from "@/utils/data/orders"
-import { convertToLocale } from "@/utils/helpers/math"
 import { generateMeta } from "@/utils/meta/generate-meta"
 
-import { LocalizedClientLink } from "@/components/i18n/client-link"
-import { Card, CardContent } from "@/components/ui/primitives/card"
 import { Separator } from "@/components/ui/primitives/separator"
 import { Avatar, AvatarFallback } from "@/components/ui/primitives/avatar"
+import { OrderCard } from "@/components/features/account/cards/order-card"
+import { Alert, AlertDescription } from "@/components/ui/primitives/alert"
 
 import type { HttpTypes } from "@medusajs/types"
+import { Button } from "@/components/ui/primitives/button"
+import { MessageCircleMoreIcon } from "lucide-react"
 
 type Props = {
   params: Promise<{ countryCode: string }>
@@ -35,7 +34,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function OverviewPage() {
   const customer = await retrieveCustomer().catch(() => null)
   const orders = (await listOrders().catch(() => null)) || null
-  const t = await getTranslations("pages.account.overview")
+  const t = await getTranslations("pages.account.overview.content")
 
   if (!customer) {
     notFound()
@@ -74,17 +73,22 @@ export default async function OverviewPage() {
   return (
     <div data-testid="overview-page-wrapper">
       <div className="hidden lg:block">
-        <div className="flex items-start gap-2">
-          <Avatar className="size-12 font-medium">
-            <AvatarFallback>{customer.first_name?.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col items-start">
-            <span className="font-bold">
-              {customer.first_name} {customer.last_name}
-            </span>
-            <u className="underline-offset-4 text-sm">{t("label.profile")}</u>
+        <nav className="flex items-center justify-between w-full">
+          <div className="flex items-start gap-2">
+            <Avatar className="size-12 font-medium">
+              <AvatarFallback>{customer.first_name?.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col items-start">
+              <span className="font-bold">
+                {customer.first_name} {customer.last_name}
+              </span>
+              <u className="underline-offset-4 text-sm">{t("label.profile")}</u>
+            </div>
           </div>
-        </div>
+          <Button size="lg" disabled>
+            {t("button.support")} <MessageCircleMoreIcon />
+          </Button>
+        </nav>
         <Separator className="my-5" />
         <div className="flex items-center justify-around mb-6 py-6 bg-secondary rounded-xl">
           <div className="flex flex-col items-center">
@@ -129,60 +133,16 @@ export default async function OverviewPage() {
                     data-testid="order-wrapper"
                     data-value={order.id}
                   >
-                    <LocalizedClientLink
-                      href={`/account/orders/details/${order.id}`}
-                      className="group/card"
-                    >
-                      <Card className="data-[variant=default]:hover:bg-accent">
-                        <CardContent className="flex justify-between items-center w-full">
-                          <div className="grid grid-cols-3 grid-rows-2 text-sm gap-x-4 flex-1">
-                            <span className="font-semibold">
-                              {t("item.order.date")}
-                            </span>
-                            <span className="font-semibold">
-                              {t("item.order.number")}
-                            </span>
-                            <span className="font-semibold">
-                              {t("item.order.total_amount")}
-                            </span>
-                            <span data-testid="order-created-date">
-                              {new Date(order.created_at).toDateString()}
-                            </span>
-                            <span
-                              data-testid="order-id"
-                              data-value={order.display_id}
-                            >
-                              #{order.display_id}
-                            </span>
-                            <span data-testid="order-amount">
-                              {convertToLocale({
-                                amount: order.total,
-                                currency_code: order.currency_code,
-                              })}
-                            </span>
-                          </div>
-                          <button
-                            className="flex items-center justify-between"
-                            data-testid="open-order-button"
-                          >
-                            <span className="sr-only">
-                              Go to order #{order.display_id}
-                            </span>
-                            <ChevronDownIcon className="-rotate-90 size-4 group-hover/card:translate-x-2 transition-transform" />
-                          </button>
-                        </CardContent>
-                      </Card>
-                    </LocalizedClientLink>
+                    <OrderCard order={order} />
                   </li>
                 )
               })
             ) : (
-              <span
-                data-testid="no-orders-message"
-                className="justify-center w-full bg-secondary p-6 text-center"
-              >
-                {t("message.no_recent_order")}
-              </span>
+              <Alert data-testid="no-orders-message" variant="destructive">
+                <AlertDescription>
+                  {t("message.no_recent_order")}
+                </AlertDescription>
+              </Alert>
             )}
           </ul>
         </div>

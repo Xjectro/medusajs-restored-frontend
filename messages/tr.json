@@ -28,7 +28,8 @@
       "sidebar": {
         "label": {
           "welcome": "Merhaba {name}",
-          "account": "Hesap"
+          "account": "Hesap",
+          "session": "Oturum"
         },
         "item": {
           "overview": "Hesap",
@@ -159,7 +160,12 @@
           "title": "Teslimat Adresleri",
           "description": "Teslimat adreslerinizi görüntüleyin ve güncelleyin, istediğiniz kadar adres ekleyebilirsiniz. Adreslerinizi kaydettiğinizde, ödeme sırasında kullanılabilir hale gelirler."
         },
-        "add_button": "Yeni Adres Oluştur",
+        "content": {
+          "title": "Adresler",
+          "button": {
+            "add": "Yeni Adres Oluştur"
+          }
+        },
         "not_found": {
           "title": "Kayıtlı adres bulunamadı",
           "description": "Henüz bir teslimat adresi eklemediniz. Siparişlerinizi kolayca tamamlamak için yeni bir adres ekleyin."
@@ -170,10 +176,13 @@
           "title": "Ülke/Bölge ve Dil",
           "description": "Hesabınızın ülke/bölge ve dil ayarlarını yönetin."
         },
-        "label": {
-          "currency": "Para Birimi",
-          "language": "Dil",
-          "country": "Ülke/Bölge"
+        "content": {
+          "title": "Ülke/Bölge ve Dil",
+          "label": {
+            "currency": "Para Birimi",
+            "language": "Dil",
+            "country": "Ülke/Bölge"
+          }
         }
       },
       "overview": {
@@ -181,21 +190,19 @@
           "title": "Hesap",
           "description": "Hesap bilgileriniz, kayıtlı adresleriniz ve son siparişlerinizi bu sayfadan görüntüleyebilirsiniz."
         },
-        "label": {
-          "profile": "Profil",
-          "profile_completing": "Profilin Tamamlanmasına",
-          "address_count": "Kaydedilen Adres Sayısı",
-          "recent_orders": "Son Siparişler"
-        },
-        "item": {
-          "order": {
-            "date": "Sipariş Tarihi",
-            "number": "Sipariş Numarası",
-            "total_amount": "Toplam Tutar"
+        "content": {
+          "label": {
+            "profile": "Profil",
+            "profile_completing": "Profilin Tamamlanmasına",
+            "address_count": "Kaydedilen Adres Sayısı",
+            "recent_orders": "Son Siparişler"
+          },
+          "button": {
+            "support": "Destek"
+          },
+          "message": {
+            "no_recent_order": "Geçmiş sipariş bulanamadı"
           }
-        },
-        "message": {
-          "no_recent_order": "Geçmiş sipariş bulanamadı"
         }
       },
       "profile": {
@@ -203,20 +210,26 @@
           "title": "Profil",
           "description": "Adınız, e-posta adresiniz ve telefon numaranız dahil olmak üzere profil bilgilerinizi görüntüleyin ve güncelleyin. Ayrıca fatura adresinizi güncelleyebilir veya şifrenizi değiştirebilirsiniz."
         },
-        "label": {
-          "name": "İSİM",
-          "email": "E-POSTA",
-          "phone": "TELEFON NUMARASI",
-          "password": "ŞİFRE"
-        },
-        "description": {
-          "password": "Güvenlik nedeniyle şifre gösterilmemektedir"
+        "content": {
+          "title": "Profil",
+          "label": {
+            "name": "İSİM",
+            "email": "E-POSTA",
+            "phone": "TELEFON NUMARASI",
+            "password": "ŞİFRE"
+          },
+          "description": {
+            "password": "Güvenlik nedeniyle şifre gösterilmemektedir"
+          }
         }
       },
       "orders": {
         "meta": {
           "title": "Siparişler",
           "description": "Geçmiş ve güncel siparişlerinizi görüntüleyin, kargo durumunu takip edin ve sipariş detaylarına kolayca erişin."
+        },
+        "content": {
+          "title": "Siparişler"
         }
       },
       "order_detail": {
@@ -224,58 +237,62 @@
           "title": "Sipariş #{number}",
           "description": "Sipariş #{number} detaylarını görüntüleyin, ürün bilgilerini inceleyin ve kargo teslimat durumunu kolayca takip edin."
         },
-        "label": {
-          "information_sent": "Sipariş onay bilgilerinizi {email} adresine gönderdik.",
-          "date": "Sipariş Tarihi",
-          "number": "Sipariş Numarası",
-          "order_status": "Sipariş Durumu",
-          "payment_status": "Ödeme Durumu"
-        },
-        "table": {
-          "product_info": "Ürün Bilgisi",
-          "price": "Fiyat",
-          "message": "Sipariş İçerikleri"
-        },
-        "progress_label": {
-          "not_fulfilled": "Onay Bekliyor",
-          "captured": "Onaylandı",
-          "fulfilled": "Kargoya Verildi",
-          "delivered": "Teslim Edildi"
-        },
-        "shipping_details": {
-          "shipping_address": "Teslimat Adresi",
-          "contact": "İletişim Bilgileri",
-          "method": "Teslimat Metodu"
-        },
-        "fulfilled_status": {
-          "not_fulfilled": "Onay Bekliyor",
-          "partially_fulfilled": "Onay Bekleyen Ürünler Var",
-          "fulfilled": "Onaylandı",
-          "partially_shipped": "Kargoya Verilmeyi Bekleyen Ürünler Var",
-          "shipped": "Kargoya Verildi",
-          "partially_delivered": "Teslim Edilmeyi Bekleyen Ürünler Var",
-          "canceled": "İptal Edildi",
-          "delivered": "Teslim Edildi"
-        },
-        "payment_status": {
-          "authorized": "Ödeme Bekleniyor",
-          "captured": "Ödeme Alındı",
-          "partially_refunded": "Bazı Ürünler İade Edildi",
-          "refunded": "İade Edildi",
-          "canceled": "İptal Edildi",
-          "requires_action": "Eylem Gerekiyor",
-          "awaiting": "Ödeme Bekleniyor",
-          "not_paid": "Ödenmedi"
-        },
-        "summary": {
-          "total": "Toplam Tutar",
-          "taxes": "Vergiler",
-          "shipping": "Nakliye",
-          "subtotal": "Ara Toplam",
-          "discount": "Toplam İndirim",
-          "gift_card": "Hediye Kartı"
-        },
-        "back_button": "Siparişlerim Sayfasına Dön"
+        "content": {
+          "label": {
+            "information_sent": "Sipariş onay bilgilerinizi {email} adresine gönderdik.",
+            "date": "Sipariş Tarihi",
+            "number": "Sipariş Numarası",
+            "order_status": "Sipariş Durumu",
+            "payment_status": "Ödeme Durumu"
+          },
+          "table": {
+            "product_info": "Ürün Bilgisi",
+            "price": "Fiyat",
+            "message": "Sipariş İçerikleri"
+          },
+          "progress_label": {
+            "not_fulfilled": "Onay Bekliyor",
+            "captured": "Onaylandı",
+            "fulfilled": "Kargoya Verildi",
+            "delivered": "Teslim Edildi"
+          },
+          "shipping_details": {
+            "shipping_address": "Teslimat Adresi",
+            "contact": "İletişim Bilgileri",
+            "method": "Teslimat Metodu"
+          },
+          "fulfilled_status": {
+            "not_fulfilled": "Onay Bekliyor",
+            "partially_fulfilled": "Onay Bekleyen Ürünler Var",
+            "fulfilled": "Onaylandı",
+            "partially_shipped": "Kargoya Verilmeyi Bekleyen Ürünler Var",
+            "shipped": "Kargoya Verildi",
+            "partially_delivered": "Teslim Edilmeyi Bekleyen Ürünler Var",
+            "canceled": "İptal Edildi",
+            "delivered": "Teslim Edildi"
+          },
+          "payment_status": {
+            "authorized": "Ödeme Bekleniyor",
+            "captured": "Ödeme Alındı",
+            "partially_refunded": "Bazı Ürünler İade Edildi",
+            "refunded": "İade Edildi",
+            "canceled": "İptal Edildi",
+            "requires_action": "Eylem Gerekiyor",
+            "awaiting": "Ödeme Bekleniyor",
+            "not_paid": "Ödenmedi"
+          },
+          "summary": {
+            "total": "Toplam Tutar",
+            "taxes": "Vergiler",
+            "shipping": "Nakliye",
+            "subtotal": "Ara Toplam",
+            "discount": "Toplam İndirim",
+            "gift_card": "Hediye Kartı"
+          },
+          "button": {
+            "back": "Siparişlerim Sayfasına Dön"
+          }
+        }
       }
     },
     "cart": {
@@ -598,9 +615,24 @@
         }
       },
       "cards": {
+        "address_card": {
+          "button": {
+            "remove": "Kaldır",
+            "edit": "Güncelle"
+          },
+          "dialog": {
+            "remove_dialog": {
+              "title": "Adresi silmek istediğine emin misin?",
+              "description": "Bu işlem geri alınamaz. Adres silindikten sonra tekrar kullanılamaz.",
+              "button": {
+                "cancel": "Vazgeç",
+                "action": "Adresi Sil"
+              }
+            }
+          }
+        },
         "order_card": {
-          "item_count": "{count, plural, one {# Öğe} other {# Öğeler}}",
-          "detail_button": "Detayları Görüntüler",
+          "order_number": "Sipariş no",
           "fulfilled_status": {
             "not_fulfilled": "Onay Bekliyor",
             "partially_fulfilled": "Onay Bekleyen Ürünler Var",
@@ -645,6 +677,9 @@
       },
       "line_item_unit_price": {
         "label": "Orjinal"
+      },
+      "country_select": {
+        "placeholder": "Ülke"
       }
     },
     "product": {

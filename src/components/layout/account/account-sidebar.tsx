@@ -8,9 +8,12 @@ import {
   ChevronRightIcon,
   EarthIcon,
   EyeIcon,
+  FileTextIcon,
   LogOutIcon,
   MapPinIcon,
   PackageIcon,
+  PercentIcon,
+  ShieldIcon,
   UserIcon,
 } from "lucide-react"
 
@@ -18,7 +21,6 @@ import { signout } from "@/utils/data/customer"
 import { cn } from "@/lib/utils"
 
 import { LocalizedClientLink } from "@/components/i18n/client-link"
-import { Separator } from "@/components/ui/primitives/separator"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -183,10 +185,16 @@ function AccountSidebar({
                   </AccountSidebarLink>
                 </li>
               ))}
-              <Separator className="my-3" />
+            </ul>
+          </div>
+          <div className="p-2">
+            <h3 className="text-sm">{t("label.session")}</h3>
+          </div>
+          <div className="text-sm w-full">
+            <ul className="flex mb-0 justify-start items-start flex-col w-full [&>li]:w-full">
               <li>
                 <LogoutDialog asChild>
-                  <AccountSidebarLink>
+                  <AccountSidebarLink variant="destructive">
                     <LogOutIcon /> {t("item.logout")}
                   </AccountSidebarLink>
                 </LogoutDialog>
@@ -205,6 +213,7 @@ type AccountSidebarLinkProps = {
   children: React.ReactNode
   onClick?: () => void
   "data-testid"?: string
+  variant?: "destructive" | "default"
 }
 
 function AccountSidebarLink({
@@ -212,6 +221,7 @@ function AccountSidebarLink({
   route,
   onClick,
   children,
+  variant = "default",
   "data-testid": dataTestId,
 }: AccountSidebarLinkProps) {
   const { countryCode }: { countryCode: string } = useParams()
@@ -219,10 +229,13 @@ function AccountSidebarLink({
   const active = route ? route?.split(countryCode)[1] === href : false
 
   const classnames = cn(
-    "flex items-center transition-all z-10 text-sm gap-2 [&_svg]:size-5 p-2 w-full cursor-pointer before:transition-all hover:before:bg-accent before:absolute before:inset-0 before:rounded-full before:scale-95 hover:before:scale-105 before:-z-10 relative hover:text-accent-foreground text-muted-foreground",
+    "flex items-center transition-all z-10 text-sm gap-2 [&_svg]:size-5 p-2 w-full cursor-pointer rounded-lg",
     {
-      "text-foreground before:bg-accent before:scale-105 pointer-events-none":
-        active,
+      "text-foreground text-primary bg-primary/20 pointer-events-none": active,
+      "hover:text-accent-foreground hover:bg-accent text-muted-foreground":
+        variant == "default" && !active,
+      "hover:bg-destructive/20 hover:text-destructive text-destructive":
+        variant == "destructive" && !active,
     }
   )
 

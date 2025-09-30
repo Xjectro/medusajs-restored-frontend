@@ -15,6 +15,7 @@ import { UpdateProfileNameForm } from "@/components/features/account/forms/updat
 import { UpdateEmailForm } from "@/components/features/account/forms/update-email-form"
 import { UpdatePhoneForm } from "@/components/features/account/forms/update-phone-form"
 import { UpdatePasswordForm } from "@/components/features/account/forms/update-password-form"
+import { Separator } from "@/components/ui/primitives/separator"
 
 type Props = {
   params: Promise<{ countryCode: string }>
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function ProfilePage() {
-  const t = await getTranslations("pages.account.profile")
+  const t = await getTranslations("pages.account.profile.content")
   const customer = await retrieveCustomer()
   const regions = await listRegions()
 
@@ -44,6 +45,8 @@ export default async function ProfilePage() {
 
   return (
     <div className="w-full" data-testid="profile-page-wrapper">
+      <h1 className="sr-only lg:not-sr-only text-lg">{t("title")}</h1>
+      <Separator className="my-5 hidden lg:block" />
       <Accordion type="multiple">
         <AccordionItem value="profile-name">
           <AccordionTrigger>

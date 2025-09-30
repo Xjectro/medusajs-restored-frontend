@@ -88,6 +88,7 @@ function RegisterForm() {
                   <Input
                     {...field}
                     type="text"
+                    size="lg"
                     autoComplete="given-name"
                     data-testid="first-name-input"
                   />
@@ -106,6 +107,7 @@ function RegisterForm() {
                   <Input
                     {...field}
                     type="text"
+                    size="lg"
                     autoComplete="family-name"
                     data-testid="last-name-input"
                   />
@@ -124,6 +126,7 @@ function RegisterForm() {
                   <Input
                     {...field}
                     type="email"
+                    size="lg"
                     autoComplete="email"
                     data-testid="email-input"
                   />
@@ -142,6 +145,7 @@ function RegisterForm() {
                   <Input
                     {...field}
                     type="tel"
+                    size="lg"
                     autoComplete="tel"
                     data-testid="phone-input"
                   />
@@ -160,6 +164,7 @@ function RegisterForm() {
                   <Input
                     {...field}
                     type="password"
+                    size="lg"
                     autoComplete="new-password"
                     data-testid="password-input"
                   />

@@ -63,6 +63,7 @@ function LoginForm() {
                   <Input
                     {...field}
                     type="email"
+                    size="lg"
                     autoComplete="email"
                     data-testid="email-input"
                     placeholder={t("email")}
@@ -82,6 +83,7 @@ function LoginForm() {
                   <Input
                     {...field}
                     type="password"
+                    size="lg"
                     autoComplete="new-password"
                     data-testid="password-input"
                     placeholder={t("password")}

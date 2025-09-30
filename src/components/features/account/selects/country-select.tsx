@@ -10,7 +10,9 @@ import { updateRegion } from "@/utils/data/cart"
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/primitives/select"
@@ -26,6 +28,7 @@ import {
 } from "@/components/ui/primitives/alert-dialog"
 
 import type { HttpTypes } from "@medusajs/types"
+import type { ComponentProps } from "react"
 
 type CountryOption = {
   country: string | undefined
@@ -33,7 +36,12 @@ type CountryOption = {
   label: string | undefined
 }
 
-function CountrySelect({ regions }: { regions: HttpTypes.StoreRegion[] }) {
+function CountrySelect({
+  regions,
+  ...props
+}: { regions: HttpTypes.StoreRegion[] } & ComponentProps<
+  typeof SelectTrigger
+>) {
   const t = useTranslations("features.account.selects.country_select.dialog")
   const { countryCode } = useParams()
   const [open, setOpen] = useState(false)
@@ -72,25 +80,25 @@ function CountrySelect({ regions }: { regions: HttpTypes.StoreRegion[] }) {
   return (
     <Fragment>
       <Select value={countryCode as string} onValueChange={handleOpen}>
-        <SelectTrigger size="lg" className="w-full">
+        <SelectTrigger size="lg" className="w-full" {...props}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {options.map((o) =>
-            o ? (
-              <SelectItem
-                value={o.country || ""}
-                key={`${o.region}-${o.country}`}
-              >
-                <ReactCountryFlag
-                  svg
-                  className="w-5 h-5"
-                  countryCode={o?.country ?? ""}
-                />
-                {o.label}
-              </SelectItem>
-            ) : null
-          )}
+          {regions.map((r) => (
+            <SelectGroup key={r.id}>
+              <SelectLabel>{r.name}</SelectLabel>
+              {r.countries?.map((c) => (
+                <SelectItem key={c.iso_2} value={c.iso_2 ?? ""}>
+                  <ReactCountryFlag
+                    svg
+                    className="w-5 object-cover rounded-full aspect-square h-5"
+                    countryCode={c?.iso_2 ?? ""}
+                  />
+                  {c.display_name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          ))}
         </SelectContent>
       </Select>
       <AlertDialog open={open}>

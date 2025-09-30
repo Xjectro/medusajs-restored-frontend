@@ -27,6 +27,13 @@ import {
   TableRow,
 } from "@/components/ui/primitives/table"
 import { CartTotals } from "@/components/features/cart/cart-totals"
+import { Alert, AlertDescription } from "@/components/ui/primitives/alert"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/primitives/card"
 
 type Props = {
   params: Promise<{ id: string; countryCode: string }>
@@ -57,13 +64,22 @@ const STATUS_STEPS = ["not_fulfilled", "captured", "fulfilled", "delivered"]
 export default async function OrderDetailPage({ params }: Props) {
   const { id } = await params
   const order = await retrieveOrder(id).catch(() => null)
-  const t = await getTranslations("pages.account.order_detail")
+  const t = await getTranslations("pages.account.order_detail.content")
 
   if (!order) {
     notFound()
   }
 
-  function getCurrentIndex(order: any) {
+  function getCurrentIndex() {
+    if (!order) return -1
+
+    if (order.fulfillment_status === "not_fulfilled") {
+      if (order.payment_status === "captured") {
+        return STATUS_STEPS.indexOf("captured")
+      }
+      return STATUS_STEPS.indexOf("not_fulfilled")
+    }
+
     if (
       order.fulfillment_status &&
       STATUS_STEPS.includes(order.fulfillment_status)
@@ -73,25 +89,23 @@ export default async function OrderDetailPage({ params }: Props) {
       )
     }
 
-    if (order.payment_status === "captured") {
-      return STATUS_STEPS.indexOf("captured")
-    }
-
     return -1
   }
 
-  const currentIndex = getCurrentIndex(order)
+  const currentIndex = getCurrentIndex()
 
-  const getAmount = (amount?: number | null) => {
-    if (!amount) {
-      return
-    }
+  const isPaymentPending =
+    order.payment_status == "awaiting" ||
+    order.payment_status == "partially_refunded" ||
+    order.payment_status == "authorized"
 
-    return convertToLocale({
-      amount,
-      currency_code: order.currency_code,
-    })
-  }
+  const isPaymentSuccess = order.payment_status == "captured"
+
+  const isPaymentCanceled =
+    order.payment_status == "refunded" ||
+    order.payment_status == "canceled" ||
+    order.payment_status == "requires_action" ||
+    order.payment_status == "not_paid"
 
   return (
     <div className="flex flex-col lg:flex-row items-start gap-5 lg:gap-10 w-full justify-between">
@@ -107,34 +121,33 @@ export default async function OrderDetailPage({ params }: Props) {
             className="hidden lg:block"
           >
             <Button variant="ghost">
-              <XIcon /> {t("back_button")}
+              <XIcon /> {t("button.back")}
             </Button>
           </LocalizedClientLink>
         </div>
-        <div className="bg-secondary p-6 rounded-xl text-sm text-secondary-foreground">
-          <p>{t("label.information_sent", { email: order.email || "" })}</p>
-        </div>
-        <div
-          className={cn("p-6 rounded-xl text-sm", {
-            "bg-orange-100 text-orange-700":
-              order.payment_status == "awaiting" ||
-              order.payment_status == "partially_refunded" ||
-              order.payment_status == "authorized",
-            "bg-green-100 text-green-700": order.payment_status == "captured",
-            "bg-destructive text-destructive-foreground":
-              order.payment_status == "refunded" ||
-              order.payment_status == "canceled" ||
-              order.payment_status == "requires_action" ||
-              order.payment_status == "not_paid",
-          })}
+        <Alert variant="secondary">
+          <AlertDescription>
+            {t("label.information_sent", { email: order.email || "" })}
+          </AlertDescription>
+        </Alert>
+        <Alert
+          variant={
+            isPaymentPending
+              ? "pending"
+              : isPaymentSuccess
+                ? "success"
+                : isPaymentCanceled
+                  ? "destructive"
+                  : "default"
+          }
         >
-          <p>
+          <AlertDescription className="flex">
             {t("label.payment_status")}:{" "}
             <span sata-testid="order-payment-status">
               {t(`payment_status.${order.payment_status}`)}
             </span>
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
         <Separator className="my-5" />
         <Table>
           <TableCaption>{t("table.message")}</TableCaption>
@@ -199,14 +212,11 @@ export default async function OrderDetailPage({ params }: Props) {
           </TableBody>
         </Table>
         <div className="flex flex-col lg:flex-row items-stretch gap-5 w-full mt-5">
-          <div
-            className="flex flex-col w-full lg:w-1/3 rounded-xl border bg-background text-sm lg:text-base"
-            data-testid="shipping-address-summary"
-          >
-            <p className="font-medium text-foreground leading-none p-6">
-              {t("shipping_details.shipping_address")}
-            </p>
-            <div className="p-6 bg-secondary rounded-xl">
+          <Card variant="secondary" className="w-full">
+            <CardHeader>
+              <CardTitle>{t("shipping_details.shipping_address")}</CardTitle>
+            </CardHeader>
+            <CardContent>
               <p className="font-medium text-foreground">
                 {order.shipping_address?.first_name}{" "}
                 {order.shipping_address?.last_name}
@@ -222,32 +232,26 @@ export default async function OrderDetailPage({ params }: Props) {
               <p className="font-medium text-foreground">
                 {order.shipping_address?.country_code?.toUpperCase()}
               </p>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div
-            className="flex flex-col w-full lg:w-1/3 border rounded-xl bg-background text-sm lg:text-base"
-            data-testid="shipping-contact-summary"
-          >
-            <p className="font-medium text-foreground leading-none p-6">
-              {t("shipping_details.contact")}
-            </p>
-            <div className="bg-secondary rounded-xl p-6 h-full">
+          <Card variant="secondary" className="w-full">
+            <CardHeader>
+              <CardTitle>{t("shipping_details.contact")}</CardTitle>
+            </CardHeader>
+            <CardContent>
               <p className="font-medium text-foreground">
                 {order.shipping_address?.phone}
               </p>
               <p className="font-medium text-foreground">{order.email}</p>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div
-            className="flex flex-col w-full lg:w-1/3 border rounded-xl bg-background text-sm lg:text-base"
-            data-testid="shipping-method-summary"
-          >
-            <p className="font-medium text-foreground leading-none p-6">
-              {t("shipping_details.method")}
-            </p>
-            <p className="font-medium text-foreground p-6 bg-secondary rounded-xl h-full">
+          <Card variant="secondary" className="w-full">
+            <CardHeader>
+              <CardTitle>{t("shipping_details.method")}</CardTitle>
+            </CardHeader>
+            <CardContent>
               {(order as any).shipping_methods[0]?.name} (
               {convertToLocale({
                 amount: order.shipping_methods?.[0].total ?? 0,
@@ -256,8 +260,8 @@ export default async function OrderDetailPage({ params }: Props) {
                 .replace(/,/g, "")
                 .replace(/\./g, ",")}
               )
-            </p>
-          </div>
+            </CardContent>
+          </Card>
         </div>
         <Separator className="my-5" />
         <CartTotals variant="card" totals={order} />

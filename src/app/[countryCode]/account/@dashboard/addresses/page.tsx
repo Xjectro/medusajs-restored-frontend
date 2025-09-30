@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Addresses({ params }: Props) {
   const { countryCode } = await params
-  const t = await getTranslations("pages.account.addresses")
+  const t = await getTranslations("pages.account.addresses.content")
   const customer = await retrieveCustomer()
   const region = await getRegion(countryCode)
 
@@ -42,20 +42,21 @@ export default async function Addresses({ params }: Props) {
   return (
     <div className="w-full" data-testid="addresses-page-wrapper">
       {customer.addresses.length > 0 && (
-        <nav className="flex items-center lg:justify-end max-lg:fixed max-lg:bottom-0 bg-background max-lg:container max-lg:border-t left-0 max-lg:py-4 w-full">
+        <nav className="flex items-center justify-between max-lg:fixed max-lg:bottom-0 z-10 bg-background max-lg:container max-lg:border-t left-0 max-lg:py-4 w-full">
+          <h1 className="sr-only lg:not-sr-only text-lg">{t("title")}</h1>
           <AddAddressDialog
             region={region}
             addresses={customer.addresses}
             asChild
           >
             <Button className="w-full lg:w-fit" size="lg">
-              {t("add_button")}
+              {t("button.add")}
             </Button>
           </AddAddressDialog>
         </nav>
       )}
       {customer.addresses.length > 0 && (
-        <Separator className="hidden lg:block lg:my-10" />
+        <Separator className="hidden lg:block lg:my-5" />
       )}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
         {customer.addresses.map((address) => {
@@ -65,11 +66,11 @@ export default async function Addresses({ params }: Props) {
         })}
       </div>
       {customer.addresses.length == 0 && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center py-20">
           <h1 className="text-center font-semibold text-xl">
             {t("not_found.title")}
           </h1>
-          <p className="text-muted-foreground font-medium">
+          <p className="text-muted-foreground font-medium text-center">
             {t("not_found.description")}
           </p>
           <AddAddressDialog
@@ -78,7 +79,7 @@ export default async function Addresses({ params }: Props) {
             asChild
           >
             <Button className="w-full lg:w-fit mt-5" size="lg">
-              {t("add_button")}
+              {t("button.add")}
             </Button>
           </AddAddressDialog>
         </div>

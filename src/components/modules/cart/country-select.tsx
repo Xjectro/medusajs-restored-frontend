@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { useTranslations } from "next-intl"
 import ReactCountryFlag from "react-country-flag"
 
 import {
@@ -18,7 +19,9 @@ type Props = ComponentProps<typeof Select> & {
   defaultValue?: string
 }
 
-function CountrySelect({ placeholder = "Country", region, ...props }: Props) {
+function CountrySelect({ placeholder, region, ...props }: Props) {
+  const t = useTranslations("modules.cart.country_select")
+
   const countryOptions = useMemo(() => {
     if (!region) {
       return []
@@ -33,7 +36,7 @@ function CountrySelect({ placeholder = "Country", region, ...props }: Props) {
   return (
     <Select {...props}>
       <SelectTrigger size="lg" className="w-full">
-        <SelectValue placeholder={placeholder} />
+        <SelectValue placeholder={placeholder ?? t("placeholder")} />
       </SelectTrigger>
       <SelectContent>
         {countryOptions?.map(({ value, label }, index) => (

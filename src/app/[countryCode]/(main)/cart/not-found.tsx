@@ -1,10 +1,10 @@
-import Link from "next/link"
-
 import { getTranslations } from "next-intl/server"
+import { ShoppingCartIcon } from "lucide-react"
+
+import { generateMeta } from "@/utils/meta/generate-meta"
 
 import { Button } from "@/components/ui/primitives/button"
-import { generateMeta } from "@/utils/meta/generate-meta"
-import { ShoppingCartIcon } from "lucide-react"
+import { LocalizedClientLink } from "@/components/i18n/client-link"
 
 type Props = {
   params: Promise<{ countryCode: string }>
@@ -34,9 +34,9 @@ export default async function NotFound() {
         {t("title")}
       </h1>
       <p className="text-muted-foreground text-center mb-5">{t("message")}</p>
-      <Link href="/">
+      <LocalizedClientLink href="/">
         <Button size="lg">{t("button")}</Button>
-      </Link>
+      </LocalizedClientLink>
     </div>
   )
 }
