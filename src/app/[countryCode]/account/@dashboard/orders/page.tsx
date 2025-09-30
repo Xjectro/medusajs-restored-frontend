@@ -29,6 +29,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function OrdersPage() {
   const orders = await listOrders().catch(() => null)
+  const t = await getTranslations("pages.account.orders.content")
 
   if (!orders) {
     notFound()
@@ -36,6 +37,8 @@ export default async function OrdersPage() {
 
   return (
     <div className="w-full" data-testid="orders-page-wrapper">
+      <h1 className="sr-only lg:not-sr-only text-lg">{t("title")}</h1>
+      <Separator className="my-5 hidden lg:block" />
       <div className="flex flex-col gap-y-8 w-full">
         {orders.map((o) => (
           <OrderCard key={o.id} order={o} />

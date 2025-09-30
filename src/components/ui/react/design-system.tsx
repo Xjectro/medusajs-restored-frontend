@@ -26,6 +26,7 @@ type DSProps = {
   style?: React.CSSProperties
   dangerouslySetInnerHTML?: { __html: string }
   containerClassName?: string
+  lang?: string
   isArticle?: boolean
   isSpaced?: boolean
 }
@@ -101,9 +102,14 @@ export const Nav = ({
  * @returns {JSX.Element} An HTML element wrapping the entire document.
  */
 
-export const Layout = ({ children, className, style }: DSProps) => (
+export const Layout = ({
+  children,
+  className,
+  style,
+  lang = "en",
+}: DSProps) => (
   <html
-    lang="en"
+    lang={lang}
     suppressHydrationWarning
     className={cn("scroll-smooth antialiased focus:scroll-auto", className)}
     style={style}

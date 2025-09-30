@@ -1,4 +1,5 @@
 import { isEmpty } from "@/lib/type-guard"
+import { currencyDisplayMap } from "@/constants/server-data"
 
 import type { HttpTypes } from "@medusajs/types"
 
@@ -100,6 +101,15 @@ export const convertToLocale = ({
   maximumFractionDigits,
   locale = "en-US",
 }: ConvertToLocaleParams) => {
+  const customSymbol = currencyDisplayMap[currency_code.toUpperCase()]
+
+  if (customSymbol) {
+    return `${amount.toLocaleString(locale, {
+      minimumFractionDigits,
+      maximumFractionDigits,
+    })} ${customSymbol}`
+  }
+
   return currency_code && !isEmpty(currency_code)
     ? new Intl.NumberFormat(locale, {
         style: "currency",

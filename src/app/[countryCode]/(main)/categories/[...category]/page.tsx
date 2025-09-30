@@ -1,6 +1,5 @@
 import { Suspense } from "react"
 import { Metadata } from "next"
-import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { getCategoryByHandle, listCategories } from "@/utils/data/categories"
@@ -118,11 +117,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <ul className="grid grid-cols-1 gap-2">
               {productCategory.category_children?.map((c) => (
                 <li key={c.id}>
-                  <Link href={`/categories/${c.handle}`}>
+                  <LocalizedClientLink href={`/categories/${c.handle}`}>
                     <Button variant="link" size="clear">
                       {c.name}
                     </Button>
-                  </Link>
+                  </LocalizedClientLink>
                 </li>
               ))}
             </ul>

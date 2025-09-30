@@ -90,7 +90,7 @@ function CartTotals({ totals, variant = "list" }: Props) {
 
   return (
     <div className="border rounded-xl">
-      <div className="flex flex-col gap-y-2 font-medium text-foreground p-6">
+      <div className="flex flex-col gap-y-2 font-medium text-foreground p-4 lg:p-6">
         <div className="flex items-center justify-between">
           <span className="flex gap-x-1 items-center">{t("subtotal")}</span>
           <span data-testid="cart-subtotal" data-value={subtotal || 0}>
@@ -136,7 +136,7 @@ function CartTotals({ totals, variant = "list" }: Props) {
           </div>
         )}
       </div>
-      <div className="flex items-center justify-between text-foreground p-6 rounded-xl font-medium bg-secondary">
+      <div className="flex items-center justify-between text-foreground p-4 lg:p-6 rounded-xl font-medium bg-secondary">
         <span>{t("total")}</span>
         <span data-testid="cart-total" data-value={total || 0}>
           {convertToLocale({ amount: total ?? 0, currency_code })}

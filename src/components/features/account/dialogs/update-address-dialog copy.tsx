@@ -34,12 +34,14 @@ function UpdateAddressDialog({
           <DialogDescription>{t("description")}</DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[60vh]">
-          <UpdateAddressForm
-            region={region}
-            onFinish={() => setOpen(false)}
-            onCancel={() => setOpen(false)}
-            address={address}
-          />
+          <div className="p-0.5">
+            <UpdateAddressForm
+              region={region}
+              onFinish={() => setOpen(false)}
+              onCancel={() => setOpen(false)}
+              address={address}
+            />
+          </div>
         </ScrollArea>
       </DialogContent>
     </Dialog>

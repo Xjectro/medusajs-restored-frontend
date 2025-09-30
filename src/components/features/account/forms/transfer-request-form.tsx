@@ -57,7 +57,7 @@ function TransferRequestForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input placeholder={t("label")} {...field} />
+                  <Input size="lg" placeholder={t("label")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

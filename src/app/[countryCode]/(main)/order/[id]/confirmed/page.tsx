@@ -8,7 +8,7 @@ import { CartTotals } from "@/components/features/cart/cart-totals"
 
 import { retrieveOrder } from "@/utils/data/orders"
 import { generateMeta } from "@/utils/meta/generate-meta"
-import { paymentInfoMap } from "@/constants/data"
+import { paymentInfoMap } from "@/constants/client-data"
 import { isStripe } from "@/lib/type-guard"
 import { convertToLocale } from "@/utils/helpers/math"
 import { repeat } from "@/lib/utils"
@@ -17,6 +17,13 @@ import { Separator } from "@/components/ui/primitives/separator"
 import { Table, TableBody } from "@/components/ui/primitives/table"
 import { CartItem } from "@/components/features/cart/cart-item"
 import { SkeletonLineItem } from "@/components/modules/skeleton/table-line-item"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/primitives/card"
+import { Alert, AlertDescription } from "@/components/ui/primitives/alert"
 
 import type { StoreCartLineItem } from "@medusajs/types"
 
@@ -82,14 +89,18 @@ export default async function OrderConfirmedPage(props: Props) {
             </span>
             <span> {t("content.description")}</span>
           </h1>
-          <p className="bg-secondary text-secondary-foreground rounded-xl w-full p-6 text-sm mb-5">
-            {t("content.email_send_message", { email: order.email || "" })}
-          </p>
-          <p className="bg-green-100 text-green-700 p-6 w-full rounded-xl text-sm">
-            {t("content.created_message", {
-              date: new Date(order.created_at).toDateString(),
-            })}
-          </p>
+          <Alert variant="secondary">
+            <AlertDescription>
+              {t("content.email_send_message", { email: order.email || "" })}
+            </AlertDescription>
+          </Alert>
+          <Alert variant="success">
+            <AlertDescription>
+              {t("content.created_message", {
+                date: new Date(order.created_at).toDateString(),
+              })}
+            </AlertDescription>
+          </Alert>
           <Separator className="my-10" />
           <h2 className="flex flex-row text-xl lg:text-2xl font-medium mb-5">
             {t("label.summary")}
@@ -128,14 +139,15 @@ export default async function OrderConfirmedPage(props: Props) {
             {t("label.delivery")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            <div
-              className="flex flex-col w-full border rounded-xl"
+            <Card
               data-testid="shipping-address-summary"
+              variant="secondary"
+              className="w-full"
             >
-              <p className="font-medium text-foreground leading-none p-6 text-sm lg:text-base">
-                {t("label.shipping_address")}
-              </p>
-              <div className="rounded-xl bg-secondary p-6 h-full">
+              <CardHeader>
+                <CardTitle>{t("label.shipping_address")}</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <p className="font-medium text-foreground">
                   {order.shipping_address?.first_name}{" "}
                   {order.shipping_address?.last_name}
@@ -151,32 +163,34 @@ export default async function OrderConfirmedPage(props: Props) {
                 <p className="font-medium text-foreground">
                   {order.shipping_address?.country_code?.toUpperCase()}
                 </p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div
-              className="flex flex-col w-full border rounded-xl"
+            <Card
               data-testid="shipping-contact-summary"
+              variant="secondary"
+              className="w-full"
             >
-              <p className="font-medium text-foreground leading-none p-6 text-sm lg:text-base">
-                {t("label.contact")}
-              </p>
-              <div className="bg-secondary rounded-xl p-6 h-full">
+              <CardHeader>
+                <CardTitle>{t("label.contact")}</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <p className="font-medium text-foreground">
                   {order.shipping_address?.phone}
                 </p>
                 <p className="font-medium text-foreground">{order.email}</p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div
-              className="flex flex-col w-full rounded-xl border"
+            <Card
               data-testid="shipping-method-summary"
+              variant="secondary"
+              className="w-full"
             >
-              <p className="font-medium text-foreground p-6 leading-none text-sm lg:text-base">
-                {t("label.method")}
-              </p>
-              <div className="bg-secondary rounded-xl p-6 h-full">
+              <CardHeader>
+                <CardTitle>{t("label.method")}</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <p className="font-medium text-foreground">
                   {(order as any).shipping_methods[0]?.name} (
                   {convertToLocale({
@@ -187,8 +201,8 @@ export default async function OrderConfirmedPage(props: Props) {
                     .replace(/\./g, ",")}
                   )
                 </p>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
           <Separator className="my-10" />
 
@@ -198,24 +212,24 @@ export default async function OrderConfirmedPage(props: Props) {
           <div>
             {payment && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="flex flex-col w-full border rounded-xl">
-                  <p className="font-medium text-foreground leading-none p-6">
-                    {t("label.payment_method")}
-                  </p>
-                  <div className="bg-secondary rounded-xl p-6 h-full">
+                <Card variant="secondary" className="w-full">
+                  <CardHeader>
+                    <CardTitle> {t("label.payment_method")}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
                     <p
                       className="font-medium text-foreground"
                       data-testid="payment-method"
                     >
                       {paymentInfoMap[payment.provider_id].title}
                     </p>
-                  </div>
-                </div>
-                <div className="flex flex-col w-full border rounded-xl">
-                  <p className="font-medium text-foreground leading-none p-6">
-                    {t("label.payment_details")}
-                  </p>
-                  <div className="flex gap-2 font-medium bg-secondary text-secondary-foreground rounded-xl p-6 items-center">
+                  </CardContent>
+                </Card>
+                <Card variant="secondary" className="w-full">
+                  <CardHeader>
+                    <CardTitle> {t("label.payment_details")}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
                     <span className="flex items-center h-7 w-fit p-2 bg-background rounded-lg text-foreground">
                       {paymentInfoMap[payment.provider_id].icon}
                     </span>
@@ -229,8 +243,8 @@ export default async function OrderConfirmedPage(props: Props) {
                             payment.created_at ?? ""
                           ).toLocaleString()}`}
                     </p>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             )}
           </div>

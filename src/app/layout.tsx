@@ -6,7 +6,7 @@ import { getLocale } from "next-intl/server"
 
 import { getBaseURL } from "@/utils/helpers/env"
 
-import { Main } from "@/components/ui/react/design-system"
+import { Layout, Main } from "@/components/ui/react/design-system"
 import { Providers } from "@/components/providers"
 
 export const metadata: Metadata = {
@@ -16,7 +16,13 @@ export const metadata: Metadata = {
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const locale = await getLocale()
   return (
-    <html lang={locale} data-mode="light">
+    <Layout lang={locale} data-mode="light">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css?family=Poppins"
+          rel="stylesheet"
+        ></link>
+      </head>
       <body className="overflow-x-hidden">
         <Main className="relative">
           <NextIntlClientProvider locale={locale}>
@@ -24,6 +30,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           </NextIntlClientProvider>
         </Main>
       </body>
-    </html>
+    </Layout>
   )
 }

@@ -28,7 +28,8 @@
       "sidebar": {
         "label": {
           "welcome": "Hello {name}",
-          "account": "Account"
+          "account": "Account",
+          "session": "Session"
         },
         "item": {
           "overview": "Account",
@@ -159,7 +160,12 @@
           "title": "Shipping Addresses",
           "description": "View and update your shipping addresses, add as many as you want. Once saved, addresses will be available during checkout."
         },
-        "add_button": "Add New Address",
+        "content": {
+          "title": "Shipping Addresses",
+          "button": {
+            "add": "Add New Address"
+          }
+        },
         "not_found": {
           "title": "No saved addresses found",
           "description": "You haven’t added a shipping address yet. Add one to complete your orders easily.",
@@ -171,10 +177,13 @@
           "title": "Country/Region & Language",
           "description": "Manage your country/region and language settings."
         },
-        "label": {
-          "currency": "Currency",
-          "language": "Language",
-          "country": "Country/Region"
+        "content": {
+          "title": "Country/Region & Language",
+          "label": {
+            "currency": "Currency",
+            "language": "Language",
+            "country": "Country/Region"
+          }
         }
       },
       "overview": {
@@ -182,21 +191,19 @@
           "title": "Account",
           "description": "View your account details, saved addresses, and recent orders on this page."
         },
-        "label": {
-          "profile": "Profile",
-          "profile_completing": "Profile Completion",
-          "address_count": "Number of Saved Addresses",
-          "recent_orders": "Recent Orders"
-        },
-        "item": {
-          "order": {
-            "date": "Order Date",
-            "number": "Order Number",
-            "total_amount": "Total Amount"
+        "content": {
+          "label": {
+            "profile": "Profile",
+            "profile_completing": "Profile Completion",
+            "address_count": "Number of Saved Addresses",
+            "recent_orders": "Recent Orders"
+          },
+          "button": {
+            "support": "Support"
+          },
+          "message": {
+            "no_recent_order": "No past orders found"
           }
-        },
-        "message": {
-          "no_recent_order": "No past orders found"
         }
       },
       "profile": {
@@ -204,20 +211,26 @@
           "title": "Profile",
           "description": "View and update your profile details including name, email, and phone number. You can also update your billing address or change your password."
         },
-        "label": {
-          "name": "NAME",
-          "email": "EMAIL",
-          "phone": "PHONE NUMBER",
-          "password": "PASSWORD"
-        },
-        "description": {
-          "password": "For security reasons, the password is not displayed"
+        "content": {
+          "title": "Profile",
+          "label": {
+            "name": "NAME",
+            "email": "EMAIL",
+            "phone": "PHONE NUMBER",
+            "password": "PASSWORD"
+          },
+          "description": {
+            "password": "For security reasons, the password is not displayed"
+          }
         }
       },
       "orders": {
         "meta": {
           "title": "Orders",
           "description": "View your past and current orders, track shipping status, and access order details easily."
+        },
+        "content": {
+          "title": "Orders"
         }
       },
       "order_detail": {
@@ -225,58 +238,62 @@
           "title": "Order #{number}",
           "description": "View order #{number} details, check product information, and easily track shipping status."
         },
-        "label": {
-          "information_sent": "We sent your order confirmation details to {email}.",
-          "date": "Order Date",
-          "number": "Order Number",
-          "order_status": "Order Status",
-          "payment_status": "Payment Status"
-        },
-        "table": {
-          "product_info": "Product Information",
-          "price": "Price",
-          "message": "Order Items"
-        },
-        "progress_label": {
-          "not_fulfilled": "Awaiting Confirmation",
-          "captured": "Confirmed",
-          "fulfilled": "Shipped",
-          "delivered": "Delivered"
-        },
-        "shipping_details": {
-          "shipping_address": "Shipping Address",
-          "contact": "Contact Information",
-          "method": "Shipping Method"
-        },
-        "fulfilled_status": {
-          "not_fulfilled": "Awaiting Confirmation",
-          "partially_fulfilled": "Items Awaiting Confirmation",
-          "fulfilled": "Confirmed",
-          "partially_shipped": "Items Awaiting Shipment",
-          "shipped": "Shipped",
-          "partially_delivered": "Items Awaiting Delivery",
-          "canceled": "Canceled",
-          "delivered": "Delivered"
-        },
-        "payment_status": {
-          "authorized": "Awaiting Payment",
-          "captured": "Payment Received",
-          "partially_refunded": "Some Items Refunded",
-          "refunded": "Refunded",
-          "canceled": "Canceled",
-          "requires_action": "Action Required",
-          "awaiting": "Awaiting Payment",
-          "not_paid": "Not Paid"
-        },
-        "summary": {
-          "total": "Total Amount",
-          "taxes": "Taxes",
-          "shipping": "Shipping",
-          "subtotal": "Subtotal",
-          "discount": "Total Discount",
-          "gift_card": "Gift Card"
-        },
-        "back_button": "Back to My Orders"
+        "content": {
+          "label": {
+            "information_sent": "We sent your order confirmation details to {email}.",
+            "date": "Order Date",
+            "number": "Order Number",
+            "order_status": "Order Status",
+            "payment_status": "Payment Status"
+          },
+          "table": {
+            "product_info": "Product Information",
+            "price": "Price",
+            "message": "Order Items"
+          },
+          "progress_label": {
+            "not_fulfilled": "Awaiting Confirmation",
+            "captured": "Confirmed",
+            "fulfilled": "Shipped",
+            "delivered": "Delivered"
+          },
+          "shipping_details": {
+            "shipping_address": "Shipping Address",
+            "contact": "Contact Information",
+            "method": "Shipping Method"
+          },
+          "fulfilled_status": {
+            "not_fulfilled": "Awaiting Confirmation",
+            "partially_fulfilled": "Items Awaiting Confirmation",
+            "fulfilled": "Confirmed",
+            "partially_shipped": "Items Awaiting Shipment",
+            "shipped": "Shipped",
+            "partially_delivered": "Items Awaiting Delivery",
+            "canceled": "Canceled",
+            "delivered": "Delivered"
+          },
+          "payment_status": {
+            "authorized": "Awaiting Payment",
+            "captured": "Payment Received",
+            "partially_refunded": "Some Items Refunded",
+            "refunded": "Refunded",
+            "canceled": "Canceled",
+            "requires_action": "Action Required",
+            "awaiting": "Awaiting Payment",
+            "not_paid": "Not Paid"
+          },
+          "summary": {
+            "total": "Total Amount",
+            "taxes": "Taxes",
+            "shipping": "Shipping",
+            "subtotal": "Subtotal",
+            "discount": "Total Discount",
+            "gift_card": "Gift Card"
+          },
+          "button": {
+            "back": "Back to My Orders"
+          }
+        }
       }
     },
     "cart": {
@@ -599,9 +616,24 @@
         }
       },
       "cards": {
+        "address_card": {
+          "button": {
+            "remove": "Remove",
+            "edit": "Edit"
+          },
+          "dialog": {
+            "remove_dialog": {
+              "title": "Are you sure you want to delete the address?",
+              "description": "This action cannot be undone. Once deleted, the address cannot be used again.",
+              "button": {
+                "cancel": "Cancel",
+                "action": "Delete Address"
+              }
+            }
+          }
+        },
         "order_card": {
-          "item_count": "{count, plural, one {# Item} other {# Items}}",
-          "detail_button": "View Details",
+          "order_number": "Order num",
           "fulfilled_status": {
             "not_fulfilled": "Awaiting Confirmation",
             "partially_fulfilled": "Items Awaiting Confirmation",
@@ -646,6 +678,9 @@
       },
       "line_item_unit_price": {
         "label": "Original"
+      },
+      "country_select": {
+        "placeholder": "Country"
       }
     },
     "product": {

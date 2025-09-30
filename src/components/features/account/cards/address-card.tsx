@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { EditIcon, TrashIcon } from "lucide-react"
 
 import { deleteCustomerAddress } from "@/utils/data/customer"
@@ -8,6 +9,17 @@ import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/primitives/button"
 import { UpdateAddressDialog } from "@/components/features/account/dialogs/update-address-dialog copy"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/primitives/alert-dialog"
 
 import type { HttpTypes } from "@medusajs/types"
 
@@ -18,6 +30,7 @@ type Props = {
 }
 
 function AddressCard({ address, region, isActive = false }: Props) {
+  const t = useTranslations("features.account.cards.address_card")
   const [removing, setRemoving] = useState(false)
 
   const removeAddress = async () => {
@@ -36,7 +49,7 @@ function AddressCard({ address, region, isActive = false }: Props) {
       )}
       data-testid="address-container"
     >
-      <div className="flex flex-col p-6">
+      <div className="flex flex-col p-4 lg:p-6">
         <h1 className="text-left text-sm" data-testid="address-name">
           {address.first_name} {address.last_name}
         </h1>
@@ -59,17 +72,38 @@ function AddressCard({ address, region, isActive = false }: Props) {
           </span>
         </p>
       </div>
-      <div className="flex items-center p-6 gap-4 bg-secondary justify-end rounded-xl">
-        <Button
-          variant="transparent"
-          size="clear"
-          className="[&>svg]:size-4"
-          onClick={removeAddress}
-          isLoading={removing}
-        >
-          <TrashIcon />
-          Remove
-        </Button>
+      <div className="flex items-center p-4 lg:p-6 gap-4 bg-secondary justify-end rounded-xl">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="transparent"
+              size="clear"
+              className="[&>svg]:size-4"
+              isLoading={removing}
+            >
+              <TrashIcon />
+              {t("button.remove")}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {t("dialog.remove_dialog.title")}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("dialog.remove_dialog.description")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={removeAddress} isLoading={removing}>
+                {t("dialog.remove_dialog.button.action")}
+              </AlertDialogAction>
+              <AlertDialogCancel>
+                {t("dialog.remove_dialog.button.cancel")}
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <UpdateAddressDialog address={address} region={region} asChild>
           <Button
             variant="transparent"
@@ -78,7 +112,7 @@ function AddressCard({ address, region, isActive = false }: Props) {
             disabled={removing}
           >
             <EditIcon />
-            Edit
+            {t("button.edit")}
           </Button>
         </UpdateAddressDialog>
       </div>

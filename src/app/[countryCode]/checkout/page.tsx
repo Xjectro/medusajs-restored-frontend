@@ -48,7 +48,7 @@ export default async function Checkout({}) {
         <CheckoutForm cart={cart} customer={customer} />
       </PaymentWrapper>
       <div className="sticky top-26 self-start flex flex-col w-full gap-10">
-        <div className="w-full flex flex-col bg-secondary h-fit p-6 gap-4 rounded-xl">
+        <div className="w-full flex flex-col bg-secondary h-fit p-4 lg:p-6 gap-4 rounded-xl">
           <h2 className="text-xl">{t("label.summary")}</h2>
           <Separator />
           <CartTotals totals={cart} />

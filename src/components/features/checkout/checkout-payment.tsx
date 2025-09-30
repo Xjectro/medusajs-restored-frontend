@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 
 import { CircleCheckIcon, CreditCardIcon } from "lucide-react"
 
-import { paymentInfoMap } from "@/constants/data"
+import { paymentInfoMap } from "@/constants/client-data"
 import { isStripe as isStripeFunc } from "@/lib/type-guard"
 import { initiatePaymentSession } from "@/utils/data/cart"
 import { cn } from "@/lib/utils"

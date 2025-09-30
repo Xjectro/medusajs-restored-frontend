@@ -1,22 +1,19 @@
-import { useMemo } from "react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-import { ChevronRightIcon } from "lucide-react"
+import {
+  BanIcon,
+  CheckIcon,
+  ChevronRightIcon,
+  HourglassIcon,
+} from "lucide-react"
 
+import { cn } from "@/lib/utils"
 import { convertToLocale } from "@/utils/helpers/math"
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/primitives/carousel"
 import { Button } from "@/components/ui/primitives/button"
 import { LocalizedClientLink } from "@/components/i18n/client-link"
 
 import type { HttpTypes } from "@medusajs/types"
-import { cn } from "@/lib/utils"
 
 type Props = {
   order: HttpTypes.StoreOrder
@@ -25,95 +22,90 @@ type Props = {
 function OrderCard({ order }: Props) {
   const t = useTranslations("features.account.cards.order_card")
 
-  const numberOfLines = useMemo(() => {
-    return (
-      order.items?.reduce((acc, item) => {
-        return acc + item.quantity
-      }, 0) ?? 0
-    )
-  }, [order])
+  const isPending =
+    order.fulfillment_status == "not_fulfilled" ||
+    order.fulfillment_status == "partially_fulfilled" ||
+    order.fulfillment_status == "partially_shipped" ||
+    order.fulfillment_status == "partially_delivered"
+
+  const isSuccess =
+    order.fulfillment_status == "fulfilled" ||
+    order.fulfillment_status == "shipped" ||
+    order.fulfillment_status == "delivered"
+
+  const isCanceled = order.fulfillment_status == "canceled"
 
   return (
-    <div
-      className={cn("flex flex-col w-full border rounded-xl", {
-        "bg-orange-100": order.fulfillment_status == "not_fulfilled",
-        "bg-green-100":
-          order.fulfillment_status == "fulfilled" ||
-          order.fulfillment_status == "shipped" ||
-          order.fulfillment_status == "delivered",
-        "bg-red-100": order.fulfillment_status == "canceled",
-        "bg-gradient-to-r from-green-100 to-orange-100":
-          order.fulfillment_status == "partially_fulfilled" ||
-          order.fulfillment_status == "partially_shipped" ||
-          order.fulfillment_status == "partially_delivered",
-      })}
+    <LocalizedClientLink
+      href={`/account/orders/details/${order.id}`}
+      className="flex items-center justify-between w-full border rounded-xl p-4 lg:p-6"
       data-testid="order-card"
     >
-      <div className="flex flex-col lg:flex-row items-start gap-3 lg:items-center p-6 justify-between">
-        <div className="flex flex-col">
-          <div className="uppercase text-lg font-medium">
-            #<span data-testid="order-display-id">{order.display_id}</span>
-          </div>
-          <div className="flex items-center divide-x divide-white text-sm text-foreground">
-            <span className="pr-2" data-testid="order-created-at">
-              {new Date(order.created_at).toDateString()}
-            </span>
-            <span className="px-2" data-testid="order-amount">
-              {convertToLocale({
-                amount: order.total,
-                currency_code: order.currency_code,
-              })}
-            </span>
-            <span className="px-2 hidden lg:block">
-              {t(`fulfilled_status.${order.fulfillment_status}`)}
-            </span>
-            <span className="pl-2">
-              {t("item_count", { count: numberOfLines })}
-            </span>
-          </div>
+      <div className="flex items-center">
+        <div className="flex items-center gap-0 w-24">
+          {order.items?.slice(0, 2)?.map((i, idx) => (
+            <Image
+              src={i.thumbnail || ""}
+              alt={i.product_title || ""}
+              width={100}
+              height={100}
+              className={cn(
+                "border aspect-square w-14 object-cover object-center rounded-full",
+                idx === 1 && "-translate-x-8",
+                idx === 2 && "-translate-x-16"
+              )}
+              key={i.id}
+            />
+          ))}
         </div>
-        <LocalizedClientLink href={`/account/orders/details/${order.id}`}>
-          <Button data-testid="order-details-link" variant="secondary">
-            {t("detail_button")} <ChevronRightIcon />
-          </Button>
-        </LocalizedClientLink>
+        <div className="flex items-center gap-2 sr-only lg:not-sr-only">
+          <span className="text-muted-foreground">{t("order_number")}:</span>
+          <span data-testid="order-display-id" className="font-semibold">
+            {order.display_id}
+          </span>
+        </div>
       </div>
-      <div className="flex flex-col bg-secondary rounded-xl w-full border-t p-6">
-        <Carousel className="w-full">
-          <CarouselContent className="w-full">
-            {order.items?.map((i) => (
-              <CarouselItem
-                key={i.id}
-                data-testid="order-item"
-                className="basis-1/2 sm:basis-1/4"
-              >
-                <div className="flex flex-col gap-y-2">
-                  <Image
-                    src={i.thumbnail || ""}
-                    alt={i.product_title || ""}
-                    width={200}
-                    height={300}
-                    className="border rounded-lg"
-                  />
-                  <div className="flex items-center text-sm text-foreground">
-                    <span
-                      className="text-foreground font-semibold"
-                      data-testid="item-title"
-                    >
-                      {i.title}
-                    </span>
-                    <span className="ml-2">x</span>
-                    <span data-testid="item-quantity">{i.quantity}</span>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+      <div className="hidden lg:flex items-center gap-2 font-medium text-sm">
+        <span
+          className={cn("[&>svg]:size-3 rounded-full p-1 aspect-square", {
+            "bg-orange-500 text-white": isPending,
+            "bg-green-500 text-white": isSuccess,
+            "bg-destructive text-destructive-foreground": isCanceled,
+          })}
+        >
+          {isPending && <HourglassIcon strokeWidth={3} />}
+          {isSuccess && <CheckIcon strokeWidth={4} />}
+          {isCanceled && <BanIcon strokeWidth={4} />}
+        </span>
+        {t(`fulfilled_status.${order.fulfillment_status}`)}
       </div>
-    </div>
+      <div className="flex items-center gap-10 text-sm lg:text-base">
+        <div className="flex flex-col items-end">
+          <span
+            className="font-medium text-end text-sm"
+            data-testid="order-created-at"
+          >
+            {new Date(order.created_at).toDateString()}
+          </span>
+          <span
+            className="text-green-700 font-semibold"
+            data-testid="order-amount"
+          >
+            {convertToLocale({
+              amount: order.total,
+              currency_code: order.currency_code,
+            })}
+          </span>
+        </div>
+        <Button
+          data-testid="order-details-link"
+          size="icon"
+          variant="secondary"
+        >
+          <ChevronRightIcon />
+        </Button>
+      </div>
+    </LocalizedClientLink>
   )
 }
 

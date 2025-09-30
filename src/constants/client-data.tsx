@@ -5,7 +5,6 @@ import { PayPal } from "@/components/ui/icons/paypal"
 import { Bancontact } from "@/components/ui/icons/bancontact"
 import { Ideal } from "@/components/ui/icons/ideal"
 
-/* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
   string,
   { title: string; icon: React.JSX.Element }
